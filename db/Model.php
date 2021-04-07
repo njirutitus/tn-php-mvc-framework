@@ -1,7 +1,7 @@
 <?php
 
 
-namespace app\core\db;
+namespace tn\phpmvc\db;
 
 
 abstract class Model
