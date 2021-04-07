@@ -1,8 +1,8 @@
 <?php
 
-namespace app\core;
+namespace tn\phpmvc;
 
-use app\core\exception\NotFoundException;
+use tn\phpmvc\exception\NotFoundException;
 
 /**
  * Router File Doc Comment

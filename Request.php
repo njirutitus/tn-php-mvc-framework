@@ -1,10 +1,10 @@
 <?php
 
 
-namespace app\core;
+namespace tn\phpmvc;
 /**
  * Class Request
- * @package app\core
+ * @package tn\phpmvc
  */
 class Request
 {

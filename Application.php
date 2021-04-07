@@ -1,7 +1,7 @@
 <?php
 
-namespace app\core;
-use app\core\db\Database;
+namespace tn\phpmvc;
+use tn\phpmvc\db\Database;
 
 /**
  * Application File Doc Comment
@@ -9,7 +9,7 @@ use app\core\db\Database;
  * PHP version 7.4
  * 
  * @category Application
- * @package  app\core
+ * @package  tn\phpmvc
  * @author   Titus Njiru <njirutitus@gmail.com>
  * @license  http://www.gnu.org/copyleft/gpl.html GNU General Public License
  * @link     http://www.hashbangcode.com/
