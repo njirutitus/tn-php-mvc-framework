@@ -1,10 +1,16 @@
 {
     "name": "tn/php-mvc-core",
+    "description": "",
     "authors": [
         {
             "name": "titus njiru",
             "email": "njirutitus@gmail.com"
         }
     ],
+    "autoload": {
+        "psr-4": {
+            "tn\\phpmvc\\": "./"
+        }
+    },
     "require": {}
 }
