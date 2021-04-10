@@ -2,6 +2,7 @@
 
 
 namespace tn\phpmvc\db;
+use tn\phpmvc\Application;
 
 
 abstract class Model
