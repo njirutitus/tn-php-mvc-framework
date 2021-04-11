@@ -2,6 +2,7 @@
 
 namespace tn\phpmvc;
 use tn\phpmvc\db\Database;
+use tn\phpmvc\db\DbModel;
 
 /**
  * Application File Doc Comment

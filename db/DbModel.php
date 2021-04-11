@@ -1,14 +1,15 @@
 <?php
 
 
-namespace tn\phpmvc;
+namespace tn\phpmvc\db;
 
 
-use tn\phpmvc\db\Model;
+use tn\phpmvc\Model;
+use tn\phpmvc\Application;
 
 abstract class DbModel extends Model
 {
-    abstract public function tableName(): string;
+    abstract public static function tableName(): string;
 
     abstract  public function attributes(): array;
 
@@ -29,7 +30,7 @@ abstract class DbModel extends Model
 
     }
 
-    public function findOne($where)
+    public static function findOne($where)
     {
         $tableName = static::tableName();
         $attributes = array_keys($where);
