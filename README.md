@@ -16,4 +16,9 @@
 - Session Flash Messages
 - Middlewares
 - Application events
-- Framework resuable/installable core
+
+## Installation
+
+```#!/bin/bash
+composer require tn\php-mvc-core
+```
