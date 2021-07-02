@@ -4,7 +4,7 @@
 namespace tn\phpmvc\form;
 
 
-use tn\phpmvc\Model;
+use tn\phpmvc\db\Model;
 
 class Form
 {

@@ -2,7 +2,7 @@
 
 
 namespace tn\phpmvc;
-use tn\phpmvc\db\DbModel;
+use tn\phpmvc\DbModel;
 
 
 abstract class UserModel extends DbModel

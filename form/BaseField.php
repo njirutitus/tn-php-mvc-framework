@@ -4,7 +4,7 @@
 namespace tn\phpmvc\form;
 
 
-use tn\phpmvc\Model;
+use tn\phpmvc\db\Model;
 
 abstract class BaseField
 {
@@ -25,11 +25,11 @@ abstract class BaseField
     public function __toString(): string
     {
         return sprintf('
-              <div class="from-group mb-3">
-                  <label>%s</label>
-                  %s
-                  <div class="invalid-feedback">%s</div>
-              </div>
+                <div class="form-group mb-3">
+                    <label>%s</label>
+                    %s
+                    <div class="invalid-feedback">%s</div>
+                </div>
         ',
             $this->model->getLabel($this->attribute),
             $this->renderInput(),

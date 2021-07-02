@@ -2,7 +2,7 @@
 
 namespace tn\phpmvc;
 use tn\phpmvc\db\Database;
-use tn\phpmvc\db\DbModel;
+use tn\phpmvc\DbModel;
 
 /**
  * Application File Doc Comment
@@ -61,6 +61,11 @@ class Application
     public static function isGuest()
     {
         return !self::$app->user;
+    }
+
+    public static function isStaff()
+    {
+        return self::$app->user->is_staff ?? false;
     }
 
     public function run()

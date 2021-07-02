@@ -1,7 +1,9 @@
 <?php
 
 
-namespace tn\phpmvc;
+namespace tn\phpmvc\db;
+
+use tn\phpmvc\Application;
 
 
 abstract class Model
@@ -12,6 +14,7 @@ abstract class Model
     public const RULE_MAX = 'max';
     public const RULE_MATCH = 'match';
     public const RULE_UNIQUE = 'unique';
+    public const RULE_NUMBER = 'number';
 
     public function loadData($data){
         foreach ($data as $key => $value) {
@@ -47,6 +50,9 @@ abstract class Model
                 }
                 if ($ruleName === self::RULE_EMAIL && !filter_var($value,FILTER_VALIDATE_EMAIL)) {
                     $this->addErrorForRule($attribute,self::RULE_EMAIL);
+                }
+                if ($ruleName === self::RULE_NUMBER && !filter_var($value,FILTER_VALIDATE_FLOAT)) {
+                    $this->addErrorForRule($attribute,self::RULE_NUMBER);
                 }
                 if ($ruleName === self::RULE_MIN && strlen($value) < $rule['min']) {
                     $this->addErrorForRule($attribute,self::RULE_MIN,$rule);
@@ -102,6 +108,7 @@ abstract class Model
             self::RULE_MAX => 'Max length of this field must be {max}',
             self::RULE_MATCH => 'This field must be the same as {match}',
             self::RULE_UNIQUE => 'Record with this {field} already exists',
+            self::RULE_NUMBER => 'This field must be a number',
         ];
     }
 
