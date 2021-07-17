@@ -12,6 +12,7 @@ class InputField extends BaseField
     public const TYPE_PASSWORD= 'password';
     public const TYPE_EMAIL = 'email';
     public const TYPE_FILE = 'file';
+    public const TYPE_HIDDEN = 'hidden';
 
     public string $type;
 
@@ -35,6 +36,12 @@ class InputField extends BaseField
         return $this;
     }
 
+    public function hiddenField()
+    {
+        $this->type = self::TYPE_HIDDEN;
+        return $this;
+    }
+
     public function fileField()
     {
         $this->type = self::TYPE_FILE;
@@ -43,10 +50,10 @@ class InputField extends BaseField
 
     public function renderInput(): string
     {
-        return sprintf('<input type="%s" name="%s" value="%s" class="form-control%s" id="%s">',
+        return sprintf('<input type="%s" name="%s" value="%s" class="form-control%s col-6" id="%s">',
             $this->type,
             $this->attribute,
-            $this->model->{$this->attribute},
+            is_string($this->model->{$this->attribute}) ? $this->model->{$this->attribute} : "",
             $this->model->hasError($this->attribute) ? ' is-invalid' : '',            
             $this->attribute,
 
