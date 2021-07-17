@@ -25,8 +25,8 @@ abstract class BaseField
     public function __toString(): string
     {
         return sprintf('
-                <div class="form-group mb-3">
-                    <label>%s</label>
+                <div class="form-group row mb-3">
+                    <label class="col-3">%s</label>
                     %s
                     <div class="invalid-feedback">%s</div>
                 </div>
