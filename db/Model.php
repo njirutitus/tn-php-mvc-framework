@@ -4,6 +4,7 @@
 namespace tn\phpmvc\db;
 
 use tn\phpmvc\Application;
+use tn\phpmvc\utils\Filesystem;
 
 
 abstract class Model
@@ -15,6 +16,9 @@ abstract class Model
     public const RULE_MATCH = 'match';
     public const RULE_UNIQUE = 'unique';
     public const RULE_NUMBER = 'number';
+    public const RULE_INVALID_FILE_TYPE = 'filetype';
+    public const RULE_MAX_FILE_SIZE = 'maxsize';
+    public const RULE_FAILED_UPLOAD = 'upload';
 
     public function loadData($data){
         foreach ($data as $key => $value) {
@@ -40,10 +44,14 @@ abstract class Model
     public function validate(){
         foreach($this->rules() as $attribute => $rules) {
             $value = $this->{$attribute};
-            foreach ($rules as $rule){
+            foreach ($rules as $rule) {
                 $ruleName = $rule;
-                if(!is_string($ruleName)) {
+                if (!is_string($ruleName)) {
                     $ruleName = $rule[0];
+                }
+
+                if ($ruleName === self::RULE_REQUIRED && is_array($value) && array_key_exists('tmp_name', $value) && !$value['tmp_name']) {
+                    $this->addErrorForRule($attribute, self::RULE_REQUIRED);
                 }
                 if($ruleName === self::RULE_REQUIRED && !$value){
                     $this->addErrorForRule($attribute,self::RULE_REQUIRED);
@@ -64,6 +72,44 @@ abstract class Model
                     $rule['match'] = $this->getLabel($rule['match']);
                     $this->addErrorForRule($attribute,self::RULE_MATCH,$rule);
                 }
+
+                if ($ruleName === self::RULE_MAX_FILE_SIZE) {
+                    $file = new Filesystem();
+                    $max_size = $rule['max_size'] ?? false;
+                    if($max_size) {
+                        if ($file->size($value['tmp_name']) > $max_size) {
+                            $error['max_size'] = $max_size / 1000000;
+                            $this->addErrorForRule($attribute, self::RULE_MAX_FILE_SIZE, $error);
+                        }
+                    }
+
+                }
+
+                if ($ruleName === self::RULE_INVALID_FILE_TYPE) {
+                    $file = new Filesystem();
+                    $options = $rule['types'] ?? false;
+                    if($options && $value['tmp_name']) {
+                        if (!in_array($file->mimeType($value['tmp_name']), $options)) {
+                            $this->addErrorForRule($attribute, self::RULE_INVALID_FILE_TYPE, $rule);
+
+                        }
+                    }
+                }
+
+                if ($ruleName === self::RULE_FAILED_UPLOAD) {
+                    $file = new Filesystem();
+                    if(array_key_exists('tmp_name', $value) && $value['tmp_name']) {
+                        $file->setMaxSize($rule['max_size'] ?? 0);
+                        $file->allowedTypes($rule['types'] ?? []);
+                        $options = $rule['types'] ?? false;
+                        $path = $file->upload($value);
+                        if (!$path) {
+                            $this->addErrorForRule($attribute, self::RULE_FAILED_UPLOAD);
+                        }
+                        $this->{$attribute} = $path;
+                    }
+                }
+
                 if ($ruleName === self::RULE_UNIQUE ) {
                     $className = $rule['class'];
                     $uniqueAttr = $rule['attribute'] ?? $attribute;
@@ -91,6 +137,7 @@ abstract class Model
     {
         $message = $this->errorMessages()[$rule] ?? '';
         foreach ($params as $key=>$value) {
+            if(is_array($value)) $value = implode(",",$value);
             $message = str_replace("{{$key}}",$value,$message);
         }
         $this->errors[$attribute][] = $message;
@@ -109,6 +156,8 @@ abstract class Model
             self::RULE_MATCH => 'This field must be the same as {match}',
             self::RULE_UNIQUE => 'Record with this {field} already exists',
             self::RULE_NUMBER => 'This field must be a number',
+            self::RULE_MAX_FILE_SIZE => 'The size for this file must not be greater than {max_size} MB',
+            self::RULE_INVALID_FILE_TYPE => 'Only the following file types are allowed: {types}'
         ];
     }
 
