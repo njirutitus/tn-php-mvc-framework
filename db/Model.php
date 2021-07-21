@@ -16,9 +16,9 @@ abstract class Model
     public const RULE_MATCH = 'match';
     public const RULE_UNIQUE = 'unique';
     public const RULE_NUMBER = 'number';
-    public const RULE_INVALID_FILE_TYPE = 'filetype';
+    public const RULE_VALID_FILE_TYPE = 'filetype';
     public const RULE_MAX_FILE_SIZE = 'maxsize';
-    public const RULE_FAILED_UPLOAD = 'upload';
+    public const RULE_UPLOADED = 'upload';
 
     public function loadData($data){
         foreach ($data as $key => $value) {
@@ -85,7 +85,7 @@ abstract class Model
 
                 }
 
-                if ($ruleName === self::RULE_INVALID_FILE_TYPE) {
+                if ($ruleName === self::RULE_VALID_FILE_TYPE) {
                     $file = new Filesystem();
                     $options = $rule['types'] ?? false;
                     if($options && $value['tmp_name']) {
@@ -96,7 +96,7 @@ abstract class Model
                     }
                 }
 
-                if ($ruleName === self::RULE_FAILED_UPLOAD) {
+                if ($ruleName === self::RULE_UPLOADED) {
                     $file = new Filesystem();
                     if(array_key_exists('tmp_name', $value) && $value['tmp_name']) {
                         $file->setMaxSize($rule['max_size'] ?? 0);
@@ -104,7 +104,7 @@ abstract class Model
                         $options = $rule['types'] ?? false;
                         $path = $file->upload($value);
                         if (!$path) {
-                            $this->addErrorForRule($attribute, self::RULE_FAILED_UPLOAD);
+                            $this->addErrorForRule($attribute, self::RULE_UPLOADED);
                         }
                         $this->{$attribute} = $path;
                     }
@@ -157,7 +157,8 @@ abstract class Model
             self::RULE_UNIQUE => 'Record with this {field} already exists',
             self::RULE_NUMBER => 'This field must be a number',
             self::RULE_MAX_FILE_SIZE => 'The size for this file must not be greater than {max_size} MB',
-            self::RULE_INVALID_FILE_TYPE => 'Only the following file types are allowed: {types}'
+            self::RULE_VALID_FILE_TYPE => 'Only the following file types are allowed: {types}',
+            self::RULE_UPLOADED => 'The file couldn\'t be uploaded'
         ];
     }
 
