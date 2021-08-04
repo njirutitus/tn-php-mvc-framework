@@ -3,6 +3,7 @@
 namespace tn\phpmvc;
 use tn\phpmvc\db\Database;
 use tn\phpmvc\DbModel;
+use tn\phpmvc\utils\Mailer;
 
 /**
  * Application File Doc Comment
@@ -26,6 +27,7 @@ class Application
     public Database $db;
     public ?UserModel $user;
     public View $view;
+    public Mailer $mailer;
 
 
     public static string $ROOT_DIR;
@@ -45,6 +47,8 @@ class Application
         $this->view = new View();
 
         $this->db = new Database($config['db']);
+
+        $this->mailer = new Mailer($config['mail']);
 
         $primaryValue = $this->session->get('user');
 
@@ -66,6 +70,11 @@ class Application
     public static function isStaff()
     {
         return self::$app->user->is_staff ?? false;
+    }
+
+    public static function isSuperAdmin()
+    {
+        return self::$app->user->is_super_admin ?? false;
     }
 
     public function run()
