@@ -6,6 +6,7 @@ namespace tn\phpmvc;
 
 use tn\phpmvc\db\Model;
 use tn\phpmvc\Application;
+use Ramsey\Uuid\Uuid;
 
 abstract class DbModel extends Model
 {
@@ -14,6 +15,11 @@ abstract class DbModel extends Model
     abstract  public function attributes(): array;
 
     abstract public static function primaryKey(): string;
+
+    public function getToken() : string
+    {
+        return Uuid::uuid4()->toString();
+    }
 
     public function save() {
         $tableName = $this->tableName();
@@ -41,12 +47,6 @@ abstract class DbModel extends Model
             }
         }
         $attributes = $updatedAttributes;
-//        echo '<pre>';
-//        var_dump($attributes);
-//        exit();
-//        echo '</pre>';
-
-
         $params = array_map(fn($attr) => "`$attr`=:$attr",$attributes);
 
         $filter_attr = array_keys($where);
@@ -61,7 +61,6 @@ abstract class DbModel extends Model
         foreach ( $where as $key => $item) {
             $statement->bindValue(":$key",$item);
         }
-
 
         $statement->execute();
         return true;
@@ -125,6 +124,11 @@ abstract class DbModel extends Model
     public static function prepare($sql)
     {
         return Application::$app->db->pdo->prepare($sql);
+    }
+
+    public function count(): int
+    {
+        return 0;
     }
 
 }
