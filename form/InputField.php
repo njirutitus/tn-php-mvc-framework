@@ -48,6 +48,12 @@ class InputField extends BaseField
         return $this;
     }
 
+    public function emailField()
+    {
+        $this->type = self::TYPE_EMAIL;
+        return $this;
+    }
+
     public function renderInput(): string
     {
         return sprintf('<input type="%s" name="%s" value="%s" class="form-control%s col-6" id="%s">',
