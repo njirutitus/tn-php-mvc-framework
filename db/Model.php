@@ -15,6 +15,7 @@ abstract class Model
     public const RULE_MAX = 'max';
     public const RULE_MATCH = 'match';
     public const RULE_UNIQUE = 'unique';
+    public const RULE_EXISTS = 'exists';
     public const RULE_NUMBER = 'number';
     public const RULE_VALID_FILE_TYPE = 'filetype';
     public const RULE_MAX_FILE_SIZE = 'maxsize';
@@ -125,6 +126,21 @@ abstract class Model
                     }
 
                 }
+                if ($ruleName === self::RULE_EXISTS ) {
+                    $className = $rule['class'];
+                    $uniqueAttr = $rule['attribute'] ?? $attribute;
+                    $tableName = $className::tableName();
+                    $statement = Application::$app->db->prepare("SELECT * FROM $tableName WHERE $uniqueAttr = :attr");
+                    $statement->bindValue(":attr",$value);
+                    $statement->execute();
+
+                    $record = $statement->fetchObject();
+
+                    if (!$record) {
+                        $this->addErrorForRule($attribute,self::RULE_EXISTS,['field' => $this->getLabel($attribute)]);
+                    }
+
+                }
 
             }
 
@@ -158,7 +174,8 @@ abstract class Model
             self::RULE_NUMBER => 'This field must be a number',
             self::RULE_MAX_FILE_SIZE => 'The size for this file must not be greater than {max_size} MB',
             self::RULE_VALID_FILE_TYPE => 'Only the following file types are allowed: {types}',
-            self::RULE_UPLOADED => 'The file couldn\'t be uploaded'
+            self::RULE_UPLOADED => 'The file couldn\'t be uploaded',
+            self::RULE_EXISTS => 'No record with this {field}'
         ];
     }
 
