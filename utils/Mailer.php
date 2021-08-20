@@ -47,7 +47,7 @@ class Mailer
     {
         foreach($users as $user) //Add a recipient
         {
-            $this->mail->addAddress($user['email'], $user['name']);
+            $this->mail->addAddress($user['email'], $user['name'] ?? '');
         }
     }
 
