@@ -97,12 +97,15 @@ abstract class DbModel extends Model
         return  $result;
     }
 
-    public static function findMany($where)
+    public static function findMany($where=[],$orderBy = '')
     {
         $tableName = static::tableName();
         $attributes = array_keys($where);
         $sql = implode("AND ", array_map ( fn($attr) => "$attr = :$attr",$attributes));
-        $statement = self::prepare("SELECT * FROM $tableName WHERE $sql");
+        if(isset($orderBy))
+            $statement = self::prepare("SELECT * FROM $tableName WHERE $sql ORDER BY $orderBy");
+        else
+            $statement = self::prepare("SELECT * FROM $tableName WHERE $sql");
         foreach ( $where as $key => $item) {
             $statement->bindValue(":$key",$item);
         }
