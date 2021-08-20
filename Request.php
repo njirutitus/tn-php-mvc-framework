@@ -54,6 +54,10 @@ class Request
             }
         }
 
+        if(file_get_contents('php://input')) {
+            $body = json_decode(file_get_contents('php://input'));
+        }
+
         return $body;
     }
 }
