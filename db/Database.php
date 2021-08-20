@@ -86,4 +86,29 @@ class Database
 
     }
 
+    public function createSuperAdmin()
+    {
+        $user = new Application::$app->userClass;
+        $user->firstname = readline('First Name: ');
+        $user->lastname = readline("Last Name: ");
+        $user->email = readline("Email: ");
+        $user->password = readline('Password: ');
+        $user->confirmPassword = readline('Confirm Password: ');
+        $user->status = 1;
+        $user->is_staff = 1;
+        $user->is_super_admin = 1;
+        if($user->validate() && $user->register()) {
+            echo "Super Admin Created Successfully\n";
+        }
+        else {
+            var_dump($user->errors);
+            echo "Errors:\n";
+            foreach ($user->errors as $k=>$v) {
+                echo $user->labels()[$k].":\n";
+                foreach ($v as $value)
+                    echo "$value\n";
+            }
+        }
+    }
+
 }
