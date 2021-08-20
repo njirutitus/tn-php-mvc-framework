@@ -181,4 +181,12 @@ class Filesystem
         return filesize($path);
     }
 
+    public function getFile(string $file)
+    {
+        $file = Application::$ROOT_DIR.'/'.$file;
+        $mime_type = $this->mimeType($file);
+        header('Content-Type: '.$mime_type);
+        readfile($file);
+    }
+
 }
