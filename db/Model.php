@@ -91,7 +91,7 @@ abstract class Model
                     $options = $rule['types'] ?? false;
                     if($options && $value['tmp_name']) {
                         if (!in_array($file->mimeType($value['tmp_name']), $options)) {
-                            $this->addErrorForRule($attribute, self::RULE_INVALID_FILE_TYPE, $rule);
+                            $this->addErrorForRule($attribute, self::RULE_VALID_FILE_TYPE, $rule);
 
                         }
                     }
@@ -128,7 +128,7 @@ abstract class Model
                 }
                 if ($ruleName === self::RULE_EXISTS ) {
                     $className = $rule['class'];
-                    $uniqueAttr = $rule['attribute'] ?? $attribute;
+                    $uniqueAttr = $rule['col'] ?? $attribute;
                     $tableName = $className::tableName();
                     $statement = Application::$app->db->prepare("SELECT * FROM $tableName WHERE $uniqueAttr = :attr");
                     $statement->bindValue(":attr",$value);
