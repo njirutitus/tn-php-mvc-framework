@@ -54,7 +54,12 @@ class Application
 
         if($primaryValue) {
             $primaryKey = $this->userClass::primaryKey();
+            if($this->userClass::findOne([$primaryKey => $primaryValue]))
             $this->user = $this->userClass::findOne([$primaryKey => $primaryValue]);
+            else {
+                $this->session->remove('user');
+                $this->user = null;
+            }
         }
         else {
             $this->user = null;
