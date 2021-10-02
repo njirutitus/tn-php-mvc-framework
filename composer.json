@@ -15,6 +15,6 @@
   "require": {
     "vlucas/phpdotenv": "^5.3",
     "phpmailer/phpmailer": "^6.5",
-    "ramsey/uuid" : "^4.2.1",
+    "ramsey/uuid": "^4.2.1"
   }
 }
