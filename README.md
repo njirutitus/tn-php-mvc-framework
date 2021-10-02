@@ -20,5 +20,5 @@
 ## Installation
 
 ```#!/bin/bash
-composer require tn\php-mvc-core
+composer require tn/php-mvc-core
 ```
