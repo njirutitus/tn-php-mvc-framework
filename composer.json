@@ -1,6 +1,6 @@
 {
   "name": "tn/php-mvc-core",
-  "description": "",
+  "description": "Mini PHP MVC framework",
   "authors": [
     {
       "name": "titus njiru",
@@ -12,5 +12,9 @@
       "tn\\phpmvc\\": "./"
     }
   },
-  "require": {}
+  "require": {
+    "vlucas/phpdotenv": "^5.3",
+    "phpmailer/phpmailer": "^6.5",
+    "ramsey/uuid" : "^4.2.1",
+  }
 }
