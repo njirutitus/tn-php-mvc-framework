@@ -1,6 +1,7 @@
 {
   "name": "tn/php-mvc-core",
   "description": "Mini PHP MVC framework",
+  "license": "MIT",
   "authors": [
     {
       "name": "titus njiru",
